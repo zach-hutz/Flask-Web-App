@@ -3,14 +3,14 @@ from app import app
 import os
 import csv
 import pandas as pd
-
+import json
 
 @app.route('/', methods=["GET", "POST"])
 def index():
     data = []
     if request.method == 'POST':
         if request.files:
-            uploaded_file = request.files['filename'] # This line uses the same variable and worked fine
+            uploaded_file = request.files['filename']
             filepath = os.path.join(app.config['FILE_UPLOADS'], uploaded_file.filename)
             uploaded_file.save(filepath)
             with open(filepath) as file:
@@ -18,7 +18,7 @@ def index():
                 for row in csv_file:
                     data.append(row)
             data = pd.DataFrame(data)
-            return render_template('index.html', data=data.to_html(header=False, index=False))
+            return render_template('index.html', tables=[data.to_html(classes='data')], titles=data.columns.values, header=False, index=False)
     return render_template('index.html', data=data)
 
 
@@ -39,5 +39,7 @@ def upload():
             return redirect(request.url)
 
     return render_template('upload.html')
+            a = [1,2,3,4]
+            string_a = json.dumps(a)
 '''
 

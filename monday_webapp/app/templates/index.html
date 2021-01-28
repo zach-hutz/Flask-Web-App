@@ -4,6 +4,16 @@
 
 <div class="jumbotron">
     <h1 style='text-align: center'>Zach's Web Application</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        var tbl= $("#dataframe data").find('table');
+        $(document).ready(function(){
+            $(tbl).DataTable();
+            console.log(`{{data}}`)
+        } );
+    </script>
 </div>
 <div>
     <p class="lead">Upload a csv file to view its data.</p>
@@ -12,8 +22,11 @@
         <input type="submit">
     </form>
 </div>
-<div>
-{{ data | safe }}
+<br>
+<div id="div_table">
+    {% for table in tables %}
+            {{ table|safe }}
+    {% endfor %}
 </div>
 <div>
 
