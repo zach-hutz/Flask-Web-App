@@ -3,7 +3,6 @@ from app import app
 import os
 import csv
 import pandas as pd
-import json
 
 @app.route('/', methods=["GET", "POST"])
 def index():
