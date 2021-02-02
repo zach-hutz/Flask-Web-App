@@ -2,26 +2,66 @@
 {% block title %}Home{% endblock %}
 {% block body %}
 
-<div class="jumbotron">
+<div class="background">
     <h1 style='text-align: center'>Zach's Web Application</h1>
+    <br>
+    <br>
+    <br>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
-
     <script>
         $(document).ready(function(){
             $('table').DataTable();
         } );
+        function validateDropDown() {
+                var ddl = document.getElementById('ddl');
+                if(ddl.selectedIndex == 0 || ddl.options[ddl.selectedIndex].value == -1) {
+                    alert('Please select a valid option!');
+                    return false;
+                }
+                if(ddl.selectedIndex == 1){
+                    
+                }
+                if(ddl.selectedIndex == 2){
+
+                }
+                if(ddl.selectedIndex == 3){
+
+                }
+                if(ddl.selectedIndex == 4){
+
+                }
+                return true;
+            }
     </script>
 </div>
 <div>
-    <p class="lead">Upload a csv file to view its data.</p>
-    <form method="POST" enctype="multipart/form-data" action="/">
-        <input type="file" id="myFile" name="filename" accept=".csv">
-        <input type="submit">
+    <p class="lead">Select Option from dropdown window</p>
+</div>
+<div>
+    <form id='form_id' onsubmit="return validateDropDown('ddl');">
+        <select id="ddl">
+            <option value="-1">----- Please Select -----</option>
+            <option>Single Line Graph</option>
+            <option>Multiple Line Graph</option>
+            <option>Single Bar Graph</option>
+            <option>Stacked Bar Graph</option>
+        </select>
+        <br>
+        <input type="submit" />
     </form>
 </div>
+<br>
+<div>
+    <form method="POST" enctype="multipart/form-data" action="/">
+        <input class='background' type="file" id="myFile" name="filename" accept=".csv">
+        <input type="submit">
+    </form>
+    </div>
+</div>
+<br>
 <br>
 <div id="div_table">
     {% for table in tables %}

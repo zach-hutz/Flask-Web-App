@@ -1,5 +1,57 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
+input[type='submit']{
+  background-color: #9ea7af;
+  color: #111111;
+  border-color: #1b1e24;
+}
+
+.form_id {
+  padding-left: 10px;
+}
+
+.background {
+  background-color: #E8E8E8;
+}
+
+#background {
+  background-color: #E8E8E8;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #404040;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #404040;
+}
+
+input {
+  font-size: 16px;
+  font-size: max(16px, 1em);
+  font-family: inherit;
+  padding: 0.25em 0.5em;
+  background-color: #fff;
+  border: 2px solid var(--input-border);
+  border-radius: 4px;
+}
 
 div.div_table {
    display: block;
