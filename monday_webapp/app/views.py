@@ -3,6 +3,7 @@ from app import app
 import os
 import csv
 import pandas as pd
+from matplotlib import pyplot as plt
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -17,7 +18,7 @@ def index():
                 for row in csv_file:
                     data.append(row)
             data = pd.DataFrame(data)
-            print(data)
+
             return render_template('index.html', tables=[data.to_html(classes='data')], titles=data.columns.values, header=False, index=False)
     return render_template('index.html', data=data)
 

@@ -1,5 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
+
+
+.hidden {
+  display: none;
+}
+
 input[type='submit']{
   background-color: #9ea7af;
   color: #111111;
