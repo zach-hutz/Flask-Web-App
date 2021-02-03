@@ -42,13 +42,47 @@ def index():
                 pngImageSLine = io.BytesIO()
                 FigureCanvas(fig).print_png(pngImageSLine)
                 pngImageSLineB64String = "data:image/png;base64,"
-                pngImageSLineB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+                pngImageSLineB64String += base64.b64encode(pngImageSLine.getvalue()).decode('utf8')
                 return pngImageSLineB64String
 
+           def create_s_bar_g():
+               fig = Figure()
+               axis = fig.add_subplot(1, 1, 1)
+               axis.set_title(new_file)
+               axis.set_xlabel(x_label)
+               axis.set_ylabel(y_label)
+               axis.grid()
+               axis.barh(data[x_label], data[y_label])
+
+               pngImageSBar = io.BytesIO()
+               FigureCanvas(fig).print_png(pngImageSBar)
+               pngImageSBarB64String = "data:image/png;base64,"
+               pngImageSBarB64String += base64.b64encode(pngImageSBar.getvalue()).decode('utf8')
+               return pngImageSBarB64String
+
+
+           def create_stack_bar_g():
+               fig = Figure()
+               axis = fig.add_subplot(1, 1, 1)
+               axis.set_title(new_file)
+               axis.set_xlabel(x_label)
+               axis.set_ylabel(y_label)
+               axis.grid()
+               axis.bar(data[x_label], data[y_label])
+
+               pngImageSTBar = io.BytesIO()
+               FigureCanvas(fig).print_png(pngImageSTBar)
+               pngImageSTBarB64String = "data:image/png;base64,"
+               pngImageSTBarB64String += base64.b64encode(pngImageSTBar.getvalue()).decode('utf8')
+               return pngImageSTBarB64String
+
+
            create_s_line_g()
+           create_s_bar_g()
+           create_stack_bar_g()
 # Change src "image" to "imagesline" in index
 
-            return render_template('index.html', imagesline=pngImageSLineB64String, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            return render_template('index.html', imagestbar=pngImageSTBarB64String, imagesline=pngImageSLineB64String, imagesbar=pngImageSBarB64String ,tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 
