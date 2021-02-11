@@ -20,12 +20,17 @@
                     validateDropDown();
                 });
 
+            var ddl = document.getElementById('ddl');
+            var identifier = '{{ identifier }}';
+
             $("#hiddenButton").on('click', function(e) {
-                e.preventDefault();
-                if(ddl.selectedIndex == 1) {
-                    bar_graph();
-                }
-                });
+                if($('table').html().contains(identifier)){
+                    if(ddl.selectedIndex == 1) {
+                        bar_graph();
+                        console.log(datayarray);
+                }   
+            }
+        });
                
         function validateDropDown() {
                 var ddl = document.getElementById('ddl');
@@ -51,9 +56,12 @@
                 return true;
             }
         });
+
+
     function bar_graph() {
         var ctx = document.getElementById('myChart').getContext('2d');
         var datayarray = JSON.parse("{{ datayarray }}");
+        console.log(datayarray);
         var myChart = new Chart(ctx, {
         type: 'bar',
         data: {

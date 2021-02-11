@@ -29,28 +29,25 @@ def index():
 
             d_list = list(data.columns.values)
 
-            def get_x_label():
-                x_label = d_list[0]
-                return x_label
-            def get_y_label():
-                y_label = d_list[1]
-                return y_label
-            def get_title():
-                new_file = uploaded_file.filename.replace(".csv", "")
-                return new_file
-            def get_x_array():
-                d_list = list(data.columns.values)
-                x_label = d_list[0]
-                data_x_array = np.array(data[x_label])
-                return json.dumps(data_x_array)
-            def get_y_array():
-                d_list = list(data.columns.values)
-                y_label = d_list[1]
-                data_y_array = np.array(data[y_label])
-                ydump = json.dumps(data_y_array)
-                return ydump
+            
+            x_label = d_list[0]
 
-            return render_template('index.html', datayarray=get_y_array(), dataxarray=get_x_array(), dataframe=data, x_label=get_x_label(), y_label=get_y_label(), chart_title=get_title(), tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            y_label = d_list[1]
+            new_file = uploaded_file.filename.replace(".csv", "")
+
+            data_x_array = list(data[x_label])
+            data_y_array = list(data[y_label])
+            data_y_array = [i.replace(" ", "") for i in data_y_array]
+            data_y_array = [float(i) for i in data_y_array]   
+
+            ydump = json.dumps(data_y_array)
+            print(ydump)
+            print(type(x_label))
+            print(x_label)
+            ident = json.dumps(x_label)
+            print(ident)
+
+            return render_template('index.html', identifier=x_label, datayarray=ydump, dataxarray=data_x_array, chart_name=new_file, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 
@@ -58,4 +55,4 @@ def index():
 def help():
     return render_template('help.html')
 
-app.config['FILE_UPLOADS'] = "C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\file\\uploads"
+app.config['FILE_UPLOADS'] = "monday_webapp\\app\\static\\file\\uploads"
