@@ -21,16 +21,20 @@
                 });
 
             var ddl = document.getElementById('ddl');
-            var identifier = '{{ identifier }}';
 
             $("#hiddenButton").on('click', function(e) {
-                if($('table').html().contains(identifier)){
+                console.log("button pressed");
+                setTimeout(function() {
+                    console.log("timer");
+                    var datayarray = JSON.parse("{{ datayarray }}");
                     if(ddl.selectedIndex == 1) {
+                        console.log("option 1");
                         bar_graph();
                         console.log(datayarray);
-                }   
-            }
-        });
+                        console.log('{{ identifier }}');  
+                    }
+                }, 5000);
+            });
                
         function validateDropDown() {
                 var ddl = document.getElementById('ddl');

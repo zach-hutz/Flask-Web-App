@@ -5,8 +5,6 @@ import csv
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 import json
 
 
@@ -28,26 +26,30 @@ def index():
                 return error_msg
 
             d_list = list(data.columns.values)
-
-            
             x_label = d_list[0]
-
             y_label = d_list[1]
-            new_file = uploaded_file.filename.replace(".csv", "")
+            file_name = uploaded_file.filename.replace(".csv", "")
 
             data_x_array = list(data[x_label])
             data_y_array = list(data[y_label])
             data_y_array = [i.replace(" ", "") for i in data_y_array]
-            data_y_array = [float(i) for i in data_y_array]   
+            data_y_array = [float(i) for i in data_y_array]
+
+            graph_label = []
+            graph_label.append(x_label)
+            graph_label.append(y_label)
+            graph_label = [i.replace('"', '') for i in graph_label]
+            graph_label = [i.replace('"', '') for i in graph_label]
+            print(graph_label)   
 
             ydump = json.dumps(data_y_array)
             print(ydump)
-            print(type(x_label))
             print(x_label)
+            
             ident = json.dumps(x_label)
             print(ident)
 
-            return render_template('index.html', identifier=x_label, datayarray=ydump, dataxarray=data_x_array, chart_name=new_file, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            return render_template('index.html', graphlabel=graph_label, identifier=x_label, datayarray=ydump, dataxarray=data_x_array, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 
