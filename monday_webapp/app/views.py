@@ -40,16 +40,20 @@ def index():
             graph_label.append(y_label)
             graph_label = [i.replace('"', '') for i in graph_label]
             graph_label = [i.replace('"', '') for i in graph_label]
-            print(graph_label)   
+            print("GRAPH_LABEL - " + str(graph_label))   
 
             ydump = json.dumps(data_y_array)
-            print(ydump)
-            print(x_label)
+            print("YDUMP - " + str(ydump))
+            print("X_LABEL - " + x_label)
             
             ident = json.dumps(x_label)
             print(ident)
 
-            return render_template('index.html', graphlabel=graph_label, identifier=x_label, datayarray=ydump, dataxarray=data_x_array, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            print(data_x_array)
+            xdump = json.dumps(data_x_array)
+            print(xdump)
+
+            return render_template('index.html', graphlabel=graph_label, identifier=x_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 

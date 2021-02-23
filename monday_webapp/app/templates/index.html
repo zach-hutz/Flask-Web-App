@@ -1,145 +1,243 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
+    <body onload="JavaScript:checkRefresh();" onunload="JavaScript:prepareForRefresh();">
+    <div class="background">
+        <h1 style='text-align: center'>Zach's Web Application</h1>
+        <br>
+        <br>
+        <br>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></script>
+        <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
+        
+        <script>
+            function checkRefresh()
+    {
+        // Get the time now and convert to UTC seconds
+        var today = new Date();
+        var now = today.getUTCSeconds();
 
-<div class="background">
-    <h1 style='text-align: center'>Zach's Web Application</h1>
-    <br>
-    <br>
-    <br>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
-    <script>
-        $(document).ready(function(){
-            $('table').DataTable();
-            $("#form_button").on('click', function(e) {
-                    e.preventDefault();
-                    validateDropDown();
-                });
+        // Get the cookie
+        var cookie = document.cookie;
+        var cookieArray = cookie.split('; ');
 
-            var ddl = document.getElementById('ddl');
-
-            $("#hiddenButton").on('click', function(e) {
-                console.log("button pressed");
-                setTimeout(function() {
-                    console.log("timer");
-                    var datayarray = JSON.parse("{{ datayarray }}");
-                    if(ddl.selectedIndex == 1) {
-                        console.log("option 1");
-                        bar_graph();
-                        console.log(datayarray);
-                        console.log('{{ identifier }}');  
-                    }
-                }, 5000);
-            });
-               
-        function validateDropDown() {
-                var ddl = document.getElementById('ddl');
-                if(ddl.selectedIndex == 0 || ddl.options[ddl.selectedIndex].value == -1) {
-                    alert('Please select a valid option!');
-                    return false;
-                }
-                if(ddl.selectedIndex == 1){
-                    $('#hidden_data').removeClass('hidden');
-                }
-                if(ddl.selectedIndex == 2){
-                    $('#hidden_data').removeClass('hidden');
-
-                }
-                if(ddl.selectedIndex == 3){
-                    $('#hidden_data').removeClass('hidden');
-
-                }
-                if(ddl.selectedIndex == 4){
-                    $('#hidden_data').removeClass('hidden');
-
-                }
-                return true;
+        // Parse the cookies: get the stored time
+        for(var loop=0; loop < cookieArray.length; loop++)
+        {
+            var nameValue = cookieArray[loop].split('=');
+            // Get the cookie time stamp
+            if( nameValue[0].toString() == 'SHTS' )
+            {
+                var cookieTime = parseInt( nameValue[1] );
             }
-        });
-
-
-    function bar_graph() {
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var datayarray = JSON.parse("{{ datayarray }}");
-        console.log(datayarray);
-        var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: datayarray,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+            // Get the cookie page
+            else if( nameValue[0].toString() == 'SHTSP' )
+            {
+                var cookieName = nameValue[1];
             }
         }
-        });
+
+        if( cookieName &&
+            cookieTime &&
+            cookieName == escape(location.href) &&
+            Math.abs(now - cookieTime) < 5 )
+        {
+            // Refresh detected
+
+            // Insert code here representing what to do on
+            // a refresh
+            console.log("refresh detected");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            console.log(datayarray);
+            bar_graph();
+
+            // If you would like to toggle so this refresh code
+            // is executed on every OTHER refresh, then 
+            // uncomment the following line
+            // refresh_prepare = 0; 
+        }	
+
+        // You may want to add code in an else here special 
+        // for fresh page loads
     }
-    </script>
-</div>
-<div>
-    <p class="lead">Select Option from dropdown window</p>
-</div>
-<div>
-    <form id='form_id' onsubmit="return validateDropDown('ddl');">
-        <select id="ddl">
-            <option value="-1">----- Please Select -----</option>
-            <option>Single Line Graph</option>
-            <option>Multiple Line Graph</option>
-            <option>Single Bar Graph</option>
-            <option>Stacked Bar Graph</option>
-        </select>
-        <br>
-        <input id='form_button' type="submit" />
-    </form>
-</div>
-<br>
-<div>
-    <form id='hidden_data' class='hidden' method="POST" enctype="multipart/form-data" action="/">
-        <input class='background' type="file" id="myFile" name="filename" accept=".csv">
-        <input id='hiddenButton' type="submit">
-    </form>
+
+    function prepareForRefresh()
+    {
+        if( refresh_prepare > 0 )
+        {
+            // Turn refresh detection on so that if this
+            // page gets quickly loaded, we know it's a refresh
+            var today = new Date();
+            var now = today.getUTCSeconds();
+            document.cookie = 'SHTS=' + now + ';';
+            document.cookie = 'SHTSP=' + escape(location.href) + ';';
+        }
+        else
+        {
+            // Refresh detection has been disabled
+            document.cookie = 'SHTS=;';
+            document.cookie = 'SHTSP=;';
+        }
+    }
+
+    function disableRefreshDetection()
+    {
+        // The next page will look like a refresh but it actually
+        // won't be, so turn refresh detection off.
+        refresh_prepare = 0;
+
+        // Also return true so this can be placed in onSubmits
+        // without fear of any problems.
+        return true;
+    } 
+
+    // By default, turn refresh detection on
+    var refresh_prepare = 1;
+        </script>
+
+        <script>
+            $(document).ready(function(){
+                $('table').DataTable();
+                $("#form_button").on('click', function(e) {
+                        e.preventDefault();
+                        validateDropDown();
+                    });
+                    
+                var ddl = document.getElementById('ddl');
+
+                $("#hiddenButton").on('click', function(e) {
+                    $.getScript("base.html", function(checkRefresh){
+                        console.log("Code ran here");
+                        var datayarray = JSON.parse("{{ datayarray }}");
+                        console.log(datayarray);
+
+                    })
+                });
+
+                $("#hiddenButton").on('click', function(e) {
+                    console.log("button pressed");
+                    setTimeout(function() {
+                        console.log("timer");
+                        var datayarray = JSON.parse("{{ datayarray }}");
+                        if(ddl.selectedIndex == 1) {
+                            console.log("option 1");
+                            bar_graph();
+                            console.log(datayarray);
+                            console.log('{{ identifier }}');  
+                        }
+
+                    }, 2000);
+                });
+                
+            function validateDropDown() {
+                    var ddl = document.getElementById('ddl');
+                    if(ddl.selectedIndex == 0 || ddl.options[ddl.selectedIndex].value == -1) {
+                        alert('Please select a valid option!');
+                        return false;
+                    }
+                    if(ddl.selectedIndex == 1){
+                        $('#hidden_data').removeClass('hidden');
+                    }
+                    if(ddl.selectedIndex == 2){
+                        $('#hidden_data').removeClass('hidden');
+
+                    }
+                    if(ddl.selectedIndex == 3){
+                        $('#hidden_data').removeClass('hidden');
+
+                    }
+                    if(ddl.selectedIndex == 4){
+                        $('#hidden_data').removeClass('hidden');
+
+                    }
+                    return true;
+                }
+            });
+
+
+        function bar_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            console.log(datayarray);
+            var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: datayarray,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            });
+        }
+        </script>
     </div>
-</div>
-<br>
-<br>
-<div id="div_table">
-    {% for table in tables %}
-            {{ table|safe }}
-    {% endfor %}
-    {{ error_msg }}
-</div>
-<div>
-    <canvas id="myChart" width="100" height="100"></canvas>
-</div>
-<div>
+    <div>
+        <p class="lead">Select Option from dropdown window</p>
+    </div>
+    <div>
+        <form id='form_id' onsubmit="return validateDropDown('ddl');">
+            <select id="ddl">
+                <option value="-1">----- Please Select -----</option>
+                <option>Single Line Graph</option>
+                <option>Multiple Line Graph</option>
+                <option>Single Bar Graph</option>
+                <option>Stacked Bar Graph</option>
+            </select>
+            <br>
+            <input id='form_button' type="submit" />
+        </form>
+    </div>
+    <br>
+    <div>
+        <form id='hidden_data' class='hidden' method="POST" enctype="multipart/form-data">
+            <input class='background' type="file" id="myFile" name="filename" accept=".csv">
+            <input id='hiddenButton' type="submit">
+        </form>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div id="div_table">
+        {% for table in tables %}
+                {{ table|safe }}
+        {% endfor %}
+        {{ error_msg }}
+    </div>
+    <div>
+        <canvas id="myChart" width="100" height="100"></canvas>
+    </div>
+    <div>
+    </div>
+</body>
 
 {% endblock %}
