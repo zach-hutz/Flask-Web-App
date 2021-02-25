@@ -45,15 +45,15 @@ def index():
             ydump = json.dumps(data_y_array)
             print("YDUMP - " + str(ydump))
             print("X_LABEL - " + x_label)
+            print("Y LABEL - " + y_label)
             
-            ident = json.dumps(x_label)
-            print(ident)
-
+            
             print(data_x_array)
             xdump = json.dumps(data_x_array)
             print(xdump)
+            print(xdump)
 
-            return render_template('index.html', graphlabel=graph_label, identifier=x_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            return render_template('index.html', graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 

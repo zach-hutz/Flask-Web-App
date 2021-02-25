@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
         
         <script>
+            var graphidentifier;
             function checkRefresh()
     {
         // Get the time now and convert to UTC seconds
@@ -51,7 +52,21 @@
             // a refresh
             console.log("refresh detected");
             var datayarray = JSON.parse("{{ datayarray }}");
-            console.log(datayarray);
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+
+            var dataxarray = dataxarray.split(",")
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ddl = document.getElementById('ddl');
+            console.log(dataxarray);
+            console.log(ddl);
+            console.log(ddl.selectedIndex)
+
             bar_graph();
 
             // If you would like to toggle so this refresh code
@@ -134,20 +149,21 @@
                 
             function validateDropDown() {
                     var ddl = document.getElementById('ddl');
+                    var graphidentifier;
+                    console.log(ddl);
                     if(ddl.selectedIndex == 0 || ddl.options[ddl.selectedIndex].value == -1) {
                         alert('Please select a valid option!');
                         return false;
                     }
                     if(ddl.selectedIndex == 1){
                         $('#hidden_data').removeClass('hidden');
+                        
                     }
                     if(ddl.selectedIndex == 2){
                         $('#hidden_data').removeClass('hidden');
-
                     }
                     if(ddl.selectedIndex == 3){
                         $('#hidden_data').removeClass('hidden');
-
                     }
                     if(ddl.selectedIndex == 4){
                         $('#hidden_data').removeClass('hidden');
@@ -161,13 +177,25 @@
         function bar_graph() {
             var ctx = document.getElementById('myChart').getContext('2d');
             var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+
+            var dataxarray = dataxarray.split(",")
             console.log(datayarray);
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: dataxarray,
                 datasets: [{
-                    label: '# of Votes',
+                    label: ylabel,
                     data: datayarray,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -199,6 +227,109 @@
             }
             });
         }
+
+        function line_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+
+            var dataxarray = dataxarray.split(",")
+            console.log(datayarray);
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataxarray,
+                datasets: [{
+                    label: ylabel,
+                    data: datayarray,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            });
+        }
+
+        function multi_line_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+
+            var dataxarray = dataxarray.split(",")
+            console.log(datayarray[1]);
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataxarray,
+                    datasets: [{
+                        label: '# of Red Votes',
+                        data: datayarray[1],
+                        borderWidth: 1,
+                        fill: true,
+                        borderColor: 'red'
+                    },
+                    {
+                        label: '# of Green Votes',
+                        data: datayarray[2],
+                        borderWidth: 1,
+                        fill: false,
+                        borderColor: 'green'
+                    }
+                    ]
+                },
+                options: {
+                    scales: {
+                    yAxes: [{
+                        ticks: {
+                        beginAtZero: true
+                        }
+                    }]
+                    }
+                }
+                });
+            }
+    
         </script>
     </div>
     <div>
@@ -208,8 +339,8 @@
         <form id='form_id' onsubmit="return validateDropDown('ddl');">
             <select id="ddl">
                 <option value="-1">----- Please Select -----</option>
-                <option>Single Line Graph</option>
-                <option>Multiple Line Graph</option>
+                <option value="1">Single Line Graph</option>
+                <option value="2">Multiple Line Graph</option>
                 <option>Single Bar Graph</option>
                 <option>Stacked Bar Graph</option>
             </select>
