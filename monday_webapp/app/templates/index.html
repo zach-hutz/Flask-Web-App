@@ -14,7 +14,6 @@
         <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
         
         <script>
-            var graphidentifier;
             function checkRefresh()
     {
         // Get the time now and convert to UTC seconds
@@ -62,12 +61,15 @@
             var dataxarray = dataxarray.split(",")
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
-            var ddl = document.getElementById('ddl');
-            console.log(dataxarray);
-            console.log(ddl);
-            console.log(ddl.selectedIndex)
 
-            bar_graph();
+
+            if (localStorage.getItem("ident") == 1){
+                bar_graph();
+
+            }
+            if (localStorage.getItem("ident") == 2){
+                line_graph();
+            }
 
             // If you would like to toggle so this refresh code
             // is executed on every OTHER refresh, then 
@@ -121,35 +123,8 @@
                         validateDropDown();
                     });
                     
-                var ddl = document.getElementById('ddl');
-
-                $("#hiddenButton").on('click', function(e) {
-                    $.getScript("base.html", function(checkRefresh){
-                        console.log("Code ran here");
-                        var datayarray = JSON.parse("{{ datayarray }}");
-                        console.log(datayarray);
-
-                    })
-                });
-
-                $("#hiddenButton").on('click', function(e) {
-                    console.log("button pressed");
-                    setTimeout(function() {
-                        console.log("timer");
-                        var datayarray = JSON.parse("{{ datayarray }}");
-                        if(ddl.selectedIndex == 1) {
-                            console.log("option 1");
-                            bar_graph();
-                            console.log(datayarray);
-                            console.log('{{ identifier }}');  
-                        }
-
-                    }, 2000);
-                });
-                
             function validateDropDown() {
                     var ddl = document.getElementById('ddl');
-                    var graphidentifier;
                     console.log(ddl);
                     if(ddl.selectedIndex == 0 || ddl.options[ddl.selectedIndex].value == -1) {
                         alert('Please select a valid option!');
@@ -157,10 +132,12 @@
                     }
                     if(ddl.selectedIndex == 1){
                         $('#hidden_data').removeClass('hidden');
-                        
+                        localStorage.setItem("ident", 1);
+                        console.log(localStorage.getItem("ident"));
                     }
                     if(ddl.selectedIndex == 2){
                         $('#hidden_data').removeClass('hidden');
+                        localStorage.setItem("ident", 2);
                     }
                     if(ddl.selectedIndex == 3){
                         $('#hidden_data').removeClass('hidden');
@@ -189,7 +166,6 @@
             var ylabel = ylabel.replaceAll("&#34;", '"');
 
             var dataxarray = dataxarray.split(",")
-            console.log(datayarray);
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -241,9 +217,8 @@
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
-
             var dataxarray = dataxarray.split(",")
-            console.log(datayarray);
+            
             var myChart = new Chart(ctx, {
             type: 'line',
             data: {
