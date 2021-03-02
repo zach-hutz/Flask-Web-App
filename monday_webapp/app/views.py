@@ -3,8 +3,6 @@ from app import app
 import os
 import csv
 import pandas as pd
-from matplotlib import pyplot as plt
-import numpy as np
 import json
 
 
@@ -21,13 +19,11 @@ def index():
                 for row in csv_file:
                     data.append(row)
             data = pd.DataFrame(data[1:], columns=data[0])
-            if len(data.columns) >=3:
-                error_msg = 'Error please select a CSV with two columns'
-                return error_msg
-
             d_list = list(data.columns.values)
+
             x_label = d_list[0]
             y_label = d_list[1]
+
             file_name = uploaded_file.filename.replace(".csv", "")
 
             data_x_array = list(data[x_label])
@@ -53,7 +49,19 @@ def index():
             print(xdump)
             print(xdump)
 
-            return render_template('index.html', graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+
+            data_arrays = []
+            for col in d_list:
+                data_arrays.append(list(data[col]))
+            data_arrays = data_arrays[1:]
+            json_data = json.dumps(data_arrays)
+            print(str(json_data))
+
+            print(d_list)
+            colname = json.dumps(d_list)
+
+
+            return render_template('index.html', columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 

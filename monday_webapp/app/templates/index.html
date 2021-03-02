@@ -51,6 +51,7 @@
             // a refresh
             console.log("refresh detected");
             var datayarray = JSON.parse("{{ datayarray }}");
+
             var dataxarray = JSON.stringify("{{ dataxarray }}");
             var dataxarray = JSON.parse(dataxarray);
             var dataxarray = dataxarray.replaceAll("&#34;", '"');
@@ -63,12 +64,37 @@
             var ylabel = JSON.parse(ylabel);
 
 
-            if (localStorage.getItem("ident") == 1){
-                bar_graph();
+            var biglist = JSON.stringify("{{ json_data }}");
 
-            }
-            if (localStorage.getItem("ident") == 2){
+            var biglist = biglist.replaceAll("&#34;", '');
+            var biglist = biglist.replaceAll('"', "");
+
+            var biglist = biglist.replaceAll('   ', " ");
+
+            console.log(biglist);
+
+            var biglist = JSON.parse(biglist);
+
+
+            console.log(Object.values(biglist));
+
+            var colname = JSON.stringify('{{ columname }}');
+            var colname = JSON.parse(colname);
+
+            var colname = colname.replaceAll("[", "");
+            var colname = colname.replaceAll("]", "");
+            var colname = colname.replaceAll("&#34;", '"');
+            var colname = colname.split(",");
+            console.log(colname[2]);
+
+            if (localStorage.getItem("ident") == 1){
                 line_graph();
+            }
+            if (localStorage.getItem("ident") == 3){
+                bar_graph();
+            }
+            if (localStorage.getItem("ident") == 4){
+                stacked_bar_graph();
             }
 
             // If you would like to toggle so this refresh code
@@ -141,17 +167,18 @@
                     }
                     if(ddl.selectedIndex == 3){
                         $('#hidden_data').removeClass('hidden');
+                        localStorage.setItem("ident", 3);
                     }
                     if(ddl.selectedIndex == 4){
                         $('#hidden_data').removeClass('hidden');
+                        localStorage.setItem("ident", 4);
 
                     }
                     return true;
                 }
             });
 
-
-        function bar_graph() {
+            function bar_graph() {
             var ctx = document.getElementById('myChart').getContext('2d');
             var datayarray = JSON.parse("{{ datayarray }}");
             var datayarray = JSON.parse("{{ datayarray }}");
@@ -166,6 +193,19 @@
             var ylabel = ylabel.replaceAll("&#34;", '"');
 
             var dataxarray = dataxarray.split(",")
+
+
+            
+            var biglist = JSON.stringify("{{ json_data }}");
+
+            var biglist = biglist.replaceAll("&#34;", '');
+            var biglist = biglist.replaceAll('"', "");
+            var biglist = biglist.replaceAll('   ', " ");
+
+            console.log(biglist);
+
+            var biglist = JSON.parse(biglist);
+
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -218,9 +258,65 @@
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
             var dataxarray = dataxarray.split(",")
-            
+
             var myChart = new Chart(ctx, {
             type: 'line',
+            data: {
+                labels: dataxarray,
+                datasets: [{
+                    label: ylabel,
+                    data: datayarray,
+                    backgroundColor: [
+                    'rgba(255, 76, 0, 0.25)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 28, 20, 1)',
+                    ],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            });
+        }
+
+          function bar_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+
+            var dataxarray = dataxarray.split(",")
+
+
+            
+            var biglist = JSON.stringify("{{ json_data }}");
+
+            var biglist = biglist.replaceAll("&#34;", '');
+            var biglist = biglist.replaceAll('"', "");
+            var biglist = biglist.replaceAll('   ', " ");
+
+            console.log(biglist);
+
+            var biglist = JSON.parse(biglist);
+
+            var myChart = new Chart(ctx, {
+            type: 'bar',
             data: {
                 labels: dataxarray,
                 datasets: [{
@@ -243,6 +339,123 @@
                         'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            });
+        }
+
+        function stacked_bar_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+
+            var dataxarray = dataxarray.split(",")
+
+
+            
+            var biglist = JSON.stringify("{{ json_data }}");
+
+            var biglist = biglist.replaceAll("&#34;", '');
+            var biglist = biglist.replaceAll('"', "");
+            var biglist = biglist.replaceAll('   ', " ");
+
+            console.log(biglist);
+
+            var biglist = JSON.parse(biglist);
+
+            console.log(dataxarray);
+
+            console.log(dataxarray[1]);
+
+            var colname = JSON.stringify('{{ columname }}');
+            var colname = JSON.parse(colname);
+
+            var colname = colname.replaceAll("[", "");
+            var colname = colname.replaceAll("]", "");
+            var colname = colname.replaceAll("&#34;", '"');
+            var colname = colname.split(",");
+
+
+            var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dataxarray,
+                datasets: [
+                    {
+                        label: colname[1],
+                        data: [biglist[0]],
+                        backgroundColor: '#D6E9C6' // green
+                    },
+                    {
+                        label: colname[2],
+                        data: [biglist[1]],
+                        backgroundColor: '#FAEBCC' // yellow
+                    },
+                    {
+                        label: colname[3],
+                        data: [biglist[2]],
+                        backgroundColor: '#EBCCD1' // red
+                    }
+
+                    ],
+            },
+            options: {
+                scales: {
+                    xAxes: [{ stacked: true }],
+                    yAxes: [{ stacked: true }]
+                }
+            }
+            });
+        }
+
+
+        function line_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.split(",")
+
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataxarray,
+                datasets: [{
+                    label: ylabel,
+                    data: datayarray,
+                    backgroundColor: [
+                    'rgba(255, 76, 0, 0.25)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 28, 20, 1)',
+                    ],
+                    borderWidth: 3
                 }]
             },
             options: {
