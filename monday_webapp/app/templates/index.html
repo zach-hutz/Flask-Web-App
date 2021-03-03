@@ -85,11 +85,19 @@
             var colname = colname.replaceAll("]", "");
             var colname = colname.replaceAll("&#34;", '"');
             var colname = colname.split(",");
+            console.log(colname[1]);
             console.log(colname[2]);
+            console.log(colname[3]);
+
 
             if (localStorage.getItem("ident") == 1){
                 line_graph();
             }
+
+            if (localStorage.getItem("ident") == 2){
+                multi_line_graph();
+            }
+
             if (localStorage.getItem("ident") == 3){
                 bar_graph();
             }
@@ -392,7 +400,7 @@
             var colname = colname.replaceAll("]", "");
             var colname = colname.replaceAll("&#34;", '"');
             var colname = colname.split(",");
-
+            console.log(biglist[1]);
 
             var myChart = new Chart(ctx, {
             type: 'bar',
@@ -401,17 +409,17 @@
                 datasets: [
                     {
                         label: colname[1],
-                        data: [biglist[0]],
+                        data: [biglist],
                         backgroundColor: '#D6E9C6' // green
                     },
                     {
                         label: colname[2],
-                        data: [biglist[1]],
+                        data: [biglist],
                         backgroundColor: '#FAEBCC' // yellow
                     },
                     {
                         label: colname[3],
-                        data: [biglist[2]],
+                        data: [biglist],
                         backgroundColor: '#EBCCD1' // red
                     }
 
@@ -483,26 +491,48 @@
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
-
             var dataxarray = dataxarray.split(",")
-            console.log(datayarray[1]);
+
+            var biglist = JSON.stringify("{{ json_data }}");
+
+            var biglist = biglist.replaceAll("&#34;", '');
+            var biglist = biglist.replaceAll('"', "");
+            var biglist = biglist.replaceAll('   ', " ");
+
+            var biglist = JSON.parse(biglist);
+
+            var colname = JSON.stringify('{{ columname }}');
+            var colname = JSON.parse(colname);
+
+            var colname = colname.replaceAll("[", "");
+            var colname = colname.replaceAll("]", "");
+            var colname = colname.replaceAll("&#34;", '"');
+            var colname = colname.split(",");
+
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: dataxarray,
                     datasets: [{
-                        label: '# of Red Votes',
-                        data: datayarray[1],
+                        label: colname[1],
+                        data: biglist[0],
                         borderWidth: 1,
-                        fill: true,
+                        fill: false,
                         borderColor: 'red'
                     },
                     {
-                        label: '# of Green Votes',
-                        data: datayarray[2],
+                        label: colname[2],
+                        data: biglist[1],
                         borderWidth: 1,
                         fill: false,
                         borderColor: 'green'
+                    },
+                    {
+                        label: colname[3],
+                        data: biglist[2],
+                        borderWidth: 1,
+                        fill: false,
+                        borderColor: 'blue'
                     }
                     ]
                 },
