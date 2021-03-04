@@ -49,7 +49,6 @@
 
             // Insert code here representing what to do on
             // a refresh
-            console.log("refresh detected");
             var datayarray = JSON.parse("{{ datayarray }}");
 
             var dataxarray = JSON.stringify("{{ dataxarray }}");
@@ -58,37 +57,29 @@
             var dataxarray = dataxarray.replaceAll("[", '');
             var dataxarray = dataxarray.replaceAll("]", '');
             var dataxarray = dataxarray.replaceAll(" ", '');
-
             var dataxarray = dataxarray.split(",")
+
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
 
-
             var biglist = JSON.stringify("{{ json_data }}");
-
             var biglist = biglist.replaceAll("&#34;", '');
             var biglist = biglist.replaceAll('"', "");
-
             var biglist = biglist.replaceAll('   ', " ");
-
-            console.log(biglist);
-
             var biglist = JSON.parse(biglist);
-
-
-            console.log(Object.values(biglist));
 
             var colname = JSON.stringify('{{ columname }}');
             var colname = JSON.parse(colname);
-
             var colname = colname.replaceAll("[", "");
             var colname = colname.replaceAll("]", "");
             var colname = colname.replaceAll("&#34;", '"');
             var colname = colname.split(",");
-            console.log(colname[1]);
-            console.log(colname[2]);
-            console.log(colname[3]);
 
+            var horizarray = JSON.stringify("{{ horiz_array }}");
+            var horizarray = horizarray.replaceAll("&#34;", '');
+            var horizarray = horizarray.replaceAll('"', "");
+            var horizarray = horizarray.replaceAll('   ', " ");
+            var horizarray = JSON.parse(horizarray);
 
             if (localStorage.getItem("ident") == 1){
                 line_graph();
@@ -167,7 +158,6 @@
                     if(ddl.selectedIndex == 1){
                         $('#hidden_data').removeClass('hidden');
                         localStorage.setItem("ident", 1);
-                        console.log(localStorage.getItem("ident"));
                     }
                     if(ddl.selectedIndex == 2){
                         $('#hidden_data').removeClass('hidden');
@@ -199,19 +189,11 @@
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
-
             var dataxarray = dataxarray.split(",")
-
-
-            
             var biglist = JSON.stringify("{{ json_data }}");
-
             var biglist = biglist.replaceAll("&#34;", '');
             var biglist = biglist.replaceAll('"', "");
             var biglist = biglist.replaceAll('   ', " ");
-
-            console.log(biglist);
-
             var biglist = JSON.parse(biglist);
 
             var myChart = new Chart(ctx, {
@@ -308,19 +290,11 @@
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
-
             var dataxarray = dataxarray.split(",")
-
-
-            
             var biglist = JSON.stringify("{{ json_data }}");
-
             var biglist = biglist.replaceAll("&#34;", '');
             var biglist = biglist.replaceAll('"', "");
             var biglist = biglist.replaceAll('   ', " ");
-
-            console.log(biglist);
-
             var biglist = JSON.parse(biglist);
 
             var myChart = new Chart(ctx, {
@@ -332,19 +306,19 @@
                     data: datayarray,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+
                     ],
                     borderWidth: 1
                 }]
@@ -374,56 +348,49 @@
             var ylabel = JSON.stringify("{{ y_label }}");
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
-
-            var dataxarray = dataxarray.split(",")
-
-
-            
+            var dataxarray = dataxarray.split(",")          
             var biglist = JSON.stringify("{{ json_data }}");
-
             var biglist = biglist.replaceAll("&#34;", '');
             var biglist = biglist.replaceAll('"', "");
             var biglist = biglist.replaceAll('   ', " ");
-
-            console.log(biglist);
-
             var biglist = JSON.parse(biglist);
-
-            console.log(dataxarray);
-
-            console.log(dataxarray[1]);
-
             var colname = JSON.stringify('{{ columname }}');
             var colname = JSON.parse(colname);
-
             var colname = colname.replaceAll("[", "");
             var colname = colname.replaceAll("]", "");
             var colname = colname.replaceAll("&#34;", '"');
             var colname = colname.split(",");
-            console.log(biglist[1]);
+            var horizarray = JSON.stringify("{{ horiz_array }}");
+            var horizarray = horizarray.replaceAll("&#34;", '');
+            var horizarray = horizarray.replaceAll('"', "");
+            var horizarray = horizarray.replaceAll('   ', " ");
+            var horizarray = JSON.parse(horizarray);
+
+            var bar_graph_data = 
+            {
+                label: colname,
+                data: biglist,
+                borderWidth: 1,
+                backgroundColor: '#EBCCD1'
+            }
+            var bcolor = ["#D6E9C6", "#FAEBCC", "#EBCCD1","#6A0888","#0000FF","#00FFFF"];
+            
+            var ary = [];
+            var i;
+            for (i = 0; i < biglist.length; i++) {
+                ary.push({
+                    label: colname[i+1],
+                    data: biglist[i],
+                    borderWidth: 1,
+                    backgroundColor: bcolor[i]
+                })
+            }
 
             var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: dataxarray,
-                datasets: [
-                    {
-                        label: colname[1],
-                        data: [biglist],
-                        backgroundColor: '#D6E9C6' // green
-                    },
-                    {
-                        label: colname[2],
-                        data: [biglist],
-                        backgroundColor: '#FAEBCC' // yellow
-                    },
-                    {
-                        label: colname[3],
-                        data: [biglist],
-                        backgroundColor: '#EBCCD1' // red
-                    }
-
-                    ],
+                    labels: dataxarray,
+                    datasets: ary,                 
             },
             options: {
                 scales: {
@@ -433,7 +400,6 @@
             }
             });
         }
-
 
         function line_graph() {
             var ctx = document.getElementById('myChart').getContext('2d');
@@ -492,49 +458,45 @@
             var ylabel = JSON.parse(ylabel);
             var ylabel = ylabel.replaceAll("&#34;", '"');
             var dataxarray = dataxarray.split(",")
-
             var biglist = JSON.stringify("{{ json_data }}");
-
             var biglist = biglist.replaceAll("&#34;", '');
             var biglist = biglist.replaceAll('"', "");
             var biglist = biglist.replaceAll('   ', " ");
-
             var biglist = JSON.parse(biglist);
-
             var colname = JSON.stringify('{{ columname }}');
             var colname = JSON.parse(colname);
-
             var colname = colname.replaceAll("[", "");
             var colname = colname.replaceAll("]", "");
             var colname = colname.replaceAll("&#34;", '"');
             var colname = colname.split(",");
 
+            var line_graph_data = 
+            {
+                label: colname,
+                data: biglist,
+                borderWidth: 1,
+                fill: false,
+                borderColor: 'red'
+            }
+            var bcolor = ["red", "blue", "green","orange","yellow","purple"];
+            
+            var ary = [];
+            var i;
+            for (i = 0; i < biglist.length; i++) {
+                ary.push({
+                    label: colname[i+1],
+                    data: biglist[i],
+                    borderWidth: 1,
+                    fill: false,
+                    borderColor: bcolor[i]
+                })
+            }
+
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: dataxarray,
-                    datasets: [{
-                        label: colname[1],
-                        data: biglist[0],
-                        borderWidth: 1,
-                        fill: false,
-                        borderColor: 'red'
-                    },
-                    {
-                        label: colname[2],
-                        data: biglist[1],
-                        borderWidth: 1,
-                        fill: false,
-                        borderColor: 'green'
-                    },
-                    {
-                        label: colname[3],
-                        data: biglist[2],
-                        borderWidth: 1,
-                        fill: false,
-                        borderColor: 'blue'
-                    }
-                    ]
+                    datasets: ary,              
                 },
                 options: {
                     scales: {

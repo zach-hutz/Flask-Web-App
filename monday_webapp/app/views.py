@@ -60,9 +60,17 @@ def index():
             print(d_list)
             colname = json.dumps(d_list)
 
+            horiz_data = pd.DataFrame(data_arrays)
+            horiz_array = []
+            for i in range(0, len(horiz_data.iloc[:, 0])):
+                horiz_array.append(list(horiz_data.iloc[:, i]))
+
+            print(horiz_array)
+            horiz_array_dumps = json.dumps(horiz_array)
 
 
-            return render_template('index.html', columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 
