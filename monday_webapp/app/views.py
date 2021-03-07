@@ -1,6 +1,6 @@
 # pylint: disable=no-member
 
-from flask import render_template, request, redirect, g
+from flask import render_template, request, redirect, g, url_for
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy  import SQLAlchemy
