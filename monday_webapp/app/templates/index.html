@@ -82,18 +82,35 @@
             var horizarray = JSON.parse(horizarray);
 
             if (localStorage.getItem("ident") == 1){
-                line_graph();
+                if (colname.length <= 2) {
+                    line_graph();
+
+                }else{
+                    alert("Please select a CSV file with Two Columns!");
+                }
             }
 
             if (localStorage.getItem("ident") == 2){
-                multi_line_graph();
+                if (colname.length >= 3) {
+                    multi_line_graph();
+                }else{
+                    alert("Please select a CSV file with Three or more Columns!");
+                }
             }
 
             if (localStorage.getItem("ident") == 3){
-                bar_graph();
+                if (colname.length <= 2) {
+                    bar_graph();
+                }else{
+                    alert("Please select a CSV file with Two Columns!");
+                }
             }
             if (localStorage.getItem("ident") == 4){
-                stacked_bar_graph();
+                if (colname.length >= 3){
+                    stacked_bar_graph();
+                }else{
+                    alert("Please select a CSV file with Three or more Columns!");
+                }
             }
 
             // If you would like to toggle so this refresh code
