@@ -16,6 +16,8 @@ import csv
 import pandas as pd
 import json
 import sqlite3
+import stat
+import subprocess
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/Zachary/Documents/VSCode_Projects/monday_webapp/app/database.db'
@@ -36,6 +38,7 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
@@ -54,11 +57,27 @@ def index():
         if request.files:
             uploaded_file = request.files['filename']
             filepath = os.path.join(app.config['FILE_UPLOADS'], uploaded_file.filename)
-            uploaded_file.save(filepath)
-            with open(filepath) as file:
-                csv_file = csv.reader(file)
-                for row in csv_file:
-                    data.append(row)
+            
+            if current_user.get_id() is not None:
+                str_id = str(current_user.get_id())
+                usr_fp = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\" + str_id, uploaded_file.filename)
+                uploaded_file.save(usr_fp)
+                print("if met")
+            else:
+                uploaded_file.save(filepath)
+                print("else met")
+
+            if current_user.get_id() is None:
+                with open(filepath) as file:
+                    csv_file = csv.reader(file)
+                    for row in csv_file:
+                        data.append(row)
+            else:
+                usr_fp = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\" + str_id, uploaded_file.filename)
+                with open(usr_fp) as file:
+                    csv_file = csv.reader(file)
+                    for row in csv_file:
+                        data.append(row)
             data = pd.DataFrame(data[1:], columns=data[0])
             d_list = list(data.columns.values)
 
@@ -110,19 +129,22 @@ def index():
             horiz_array_dumps = json.dumps(horiz_array)
 
 
-
             return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
+                str_id = str(current_user.get_id())
+                absolute_path = os.path.abspath(__file__)
+                if os.path.exists(os.path.join(os.path.dirname(absolute_path) + "\\static\\user_data", str_id)) == False:
+                    os.mkdir(os.path.join(os.path.dirname(absolute_path) + "\\static\\user_data", str_id), mode=0o777)
+                    os.chmod(os.path.join(os.path.dirname(absolute_path) + "\\static\\user_data", str_id), stat.S_IWRITE)
                 return redirect('/dashboard')
 
         return '<h1>Invalid username or password</h1>'

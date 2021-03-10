@@ -112,6 +112,15 @@
                     alert("Please select a CSV file with Three or more Columns!");
                 }
             }
+            function sendingChart () {
+            var myChartData = myChart.toBase64Image();
+
+            var element = document.getElementById("myChart");
+            element.innerHTML = myChartData;
+            sendingDecoded(myChartData)
+        }
+
+        function delay () {sendingChart()}
 
             // If you would like to toggle so this refresh code
             // is executed on every OTHER refresh, then 
@@ -513,7 +522,7 @@
                 type: 'line',
                 data: {
                     labels: dataxarray,
-                    datasets: ary,              
+                    datasets: ary,
                 },
                 options: {
                     scales: {
@@ -522,9 +531,16 @@
                         beginAtZero: true
                         }
                     }]
-                    }
+                    },
+                    animation : {
+                        onComplete : done
+                    } 
                 }
+                
                 });
+                function done(){
+                    console.log(myChart.toBase64Image());
+                }
             }
     
         </script>
