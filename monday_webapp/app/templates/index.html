@@ -14,6 +14,8 @@
         <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
         
         <script>
+
+
             function checkRefresh()
     {
         // Get the time now and convert to UTC seconds
@@ -49,6 +51,7 @@
 
             // Insert code here representing what to do on
             // a refresh
+            
             var datayarray = JSON.parse("{{ datayarray }}");
 
             var dataxarray = JSON.stringify("{{ dataxarray }}");
@@ -80,7 +83,7 @@
             var horizarray = horizarray.replaceAll('"', "");
             var horizarray = horizarray.replaceAll('   ', " ");
             var horizarray = JSON.parse(horizarray);
-
+        
             if (localStorage.getItem("ident") == 1){
                 if (colname.length <= 2) {
                     line_graph();
@@ -112,15 +115,6 @@
                     alert("Please select a CSV file with Three or more Columns!");
                 }
             }
-            function sendingChart () {
-            var myChartData = myChart.toBase64Image();
-
-            var element = document.getElementById("myChart");
-            element.innerHTML = myChartData;
-            sendingDecoded(myChartData)
-        }
-
-        function delay () {sendingChart()}
 
             // If you would like to toggle so this refresh code
             // is executed on every OTHER refresh, then 
@@ -130,6 +124,8 @@
 
         // You may want to add code in an else here special 
         // for fresh page loads
+
+
     }
 
     function prepareForRefresh()
@@ -173,7 +169,7 @@
                         e.preventDefault();
                         validateDropDown();
                     });
-                    
+
             function validateDropDown() {
                     var ddl = document.getElementById('ddl');
                     console.log(ddl);
@@ -200,6 +196,7 @@
                     }
                     return true;
                 }
+
             });
 
             function bar_graph() {
@@ -532,15 +529,9 @@
                         }
                     }]
                     },
-                    animation : {
-                        onComplete : done
-                    } 
                 }
                 
                 });
-                function done(){
-                    console.log(myChart.toBase64Image());
-                }
             }
     
         </script>
