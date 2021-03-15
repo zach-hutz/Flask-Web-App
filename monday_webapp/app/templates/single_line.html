@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Single Line Graph{% endblock %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="C:\Users\Zachary\Documents\VSCode_Projects\monday_webapp\app\templates\index.html"></script>
+
+<script>
+  $(document).ready(function(){
+    line_graph();
+  });
+
+  function line_graph() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var datayarray = JSON.parse("{{ datayarray }}");
+            var dataxarray = JSON.stringify("{{ dataxarray }}");
+            var dataxarray = JSON.parse(dataxarray);
+            var dataxarray = dataxarray.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.replaceAll("[", '');
+            var dataxarray = dataxarray.replaceAll("]", '');
+            var dataxarray = dataxarray.replaceAll(" ", '');
+            var ylabel = JSON.stringify("{{ y_label }}");
+            var ylabel = JSON.parse(ylabel);
+            var ylabel = ylabel.replaceAll("&#34;", '"');
+            var dataxarray = dataxarray.split(",")
+
+            var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataxarray,
+                datasets: [{
+                    label: ylabel,
+                    data: datayarray,
+                    backgroundColor: [
+                    'rgba(255, 76, 0, 0.25)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 28, 20, 1)',
+                    ],
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+            });
+        }
+
+</script>
+<link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
+
+    <div class="container">
+
+      <canvas id="myChart" width="100" height="100"></canvas>
+
+    </div> <!-- /container -->
+    {% endblock %}

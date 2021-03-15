@@ -28,6 +28,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+data_arrays = []
+json_data = json.dumps(data_arrays)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -116,7 +119,7 @@ def index():
             horiz_array_dumps = json.dumps(horiz_array)
 
 
-            return render_template('index.html', name=current_user.username, horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -193,6 +196,10 @@ def logout():
 @app.route('/help')
 def help():
     return render_template('help.html')
+
+@app.route('/single_line')
+def single_line():
+    return render_template('single_line.html')
 
 
 app.config['FILE_UPLOADS'] = "C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\file\\uploads"
