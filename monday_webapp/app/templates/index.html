@@ -83,6 +83,22 @@
             var horizarray = horizarray.replaceAll('"', "");
             var horizarray = horizarray.replaceAll('   ', " ");
             var horizarray = JSON.parse(horizarray);
+
+            if (sessionStorage.getItem('choice') != null){
+                    var dbfilepath = sessionStorage.getItem('choice');
+                    var dbgraphtype = sessionStorage.getItem('graphtype');
+
+                    $.post('/', {
+                        javascript_data: dbfilepath
+                    });
+
+                    if (dbgraphtype == 1){
+                        console.log("option 1");
+                        line_graph();
+                        console.log(line_graph());
+                    }
+                }
+
         
             if (localStorage.getItem("ident") == 1){
                 if (colname.length <= 2) {
@@ -163,8 +179,26 @@
         </script>
 
         <script>
+            var dbfilepath;
+            var dbgraphtype;
             $(document).ready(function(){
                 $('table').DataTable();
+
+                if (sessionStorage.getItem('choice') != null){
+                    var dbfilepath = sessionStorage.getItem('choice');
+                    var dbgraphtype = sessionStorage.getItem('graphtype');
+
+                    $.post('/', {
+                        javascript_data: dbfilepath
+                    });
+
+                    if (dbgraphtype == 1){
+                        console.log("option 1");
+                        line_graph();
+                        console.log(line_graph());
+                    }
+                }
+
                 $("#form_button").on('click', function(e) {
                         e.preventDefault();
                         validateDropDown();

@@ -87,8 +87,6 @@ def index():
             x_label = d_list[0]
             y_label = d_list[1]
 
-            file_name = uploaded_file.filename.replace(".csv", "")
-
             data_x_array = list(data[x_label])
             data_y_array = list(data[y_label])
             data_y_array = [i.replace(" ", "") for i in data_y_array]
@@ -119,7 +117,52 @@ def index():
             horiz_array_dumps = json.dumps(horiz_array)
 
 
-            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, chart_name=file_name, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+        elif request.form['javascript_data'] != "":
+            desired_file = request.form['javascript_data'].strip()
+            with open(desired_file) as file:
+                csv_file = csv.reader(file)
+                for row in csv_file:
+                    data.append(row)
+
+            data = pd.DataFrame(data[1:], columns=data[0])
+            d_list = list(data.columns.values)
+
+            x_label = d_list[0]
+            y_label = d_list[1]
+
+            data_x_array = list(data[x_label])
+            data_y_array = list(data[y_label])
+            data_y_array = [i.replace(" ", "") for i in data_y_array]
+            data_y_array = [float(i) for i in data_y_array]
+
+            graph_label = []
+            graph_label.append(x_label)
+            graph_label.append(y_label)
+            graph_label = [i.replace('"', '') for i in graph_label]
+            graph_label = [i.replace('"', '') for i in graph_label]
+
+            ydump = json.dumps(data_y_array)
+            xdump = json.dumps(data_x_array)
+
+            data_arrays = []
+            for col in d_list:
+                data_arrays.append(list(data[col]))
+            data_arrays = data_arrays[1:]
+            json_data = json.dumps(data_arrays)
+
+            colname = json.dumps(d_list)
+
+            horiz_data = pd.DataFrame(data_arrays)
+            horiz_array = []
+            for i in range(0, len(horiz_data.iloc[:, 0])):
+                horiz_array.append(list(horiz_data.iloc[:, i]))
+
+            horiz_array_dumps = json.dumps(horiz_array)
+
+            print(data_arrays)
+            print(horiz_array)
+
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -161,6 +204,7 @@ def dashboard():
     user_id = "0"
     user_id_list = list(user_id)
     user_id_list_dump = json.dumps(user_id_list)
+    fix_directory = ''
     
     files_in_dir_dump = json.dumps(files_in_dir)
     file_names_in_dir_dump = json.dumps(files_in_dir)
@@ -172,6 +216,8 @@ def dashboard():
         print(user_id_list_dump)
         str_id = str(current_user.get_id())
         directory = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\",str_id)
+        fix_directory = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\",str_id + "\\")
+
 
 
         files_in_dir = next(os.walk(directory))[2]
@@ -180,12 +226,16 @@ def dashboard():
         print(file_names_in_dir_dump)
         print(files_in_dir_dump)
 
+
     files_in_dir_dump = json.dumps(len(files_in_dir))
     file_names_in_dir_dump = json.dumps(files_in_dir)
     print(file_names_in_dir_dump)
     print(files_in_dir_dump)
+    
+    dir_dump = json.dumps(fix_directory)
+    print(dir_dump)
 
-    return render_template('dashboard.html', name=current_user.username, dir_names=file_names_in_dir_dump, dir_length=files_in_dir_dump)
+    return render_template('dashboard.html', userpath=dir_dump, name=current_user.username, dir_names=file_names_in_dir_dump, dir_length=files_in_dir_dump)
 
 @app.route('/logout')
 @login_required

@@ -22,22 +22,46 @@
 
   localStorage.setItem("dir_name", name_in_dir);
 
+  var userpath = "{{ userpath }}";
+  var userpath = userpath.replaceAll("&#34;", '');
+
+  var option;
+  var pickedfile;
+ 
   $(document).ready(function(){
     var table_data = [];
     var i;
+
     for (i = 0; i < len_file_dir; i++) {
       document.getElementById("table_data").innerHTML += `
       <tr><td>${i}</td>
       <td>${name_in_dir[i]}</td>
-      <td><a href="{{ url_for('single_line') }}">Single Line Graph</a></td>
-      <td><a href="">Multiple Line Graph</a></td>
-      <td><a href="">Bar Graph</a></td>
-      <td><a href="">Stacked Bar Graph</a></td>
+      <td><a href='/'><option value='1' file-name='${name_in_dir[i]}'>Single Line Graph</option></a></td>
+      <td><a href='/'><option value='2' file-name='${name_in_dir[i]}'>Multiple Line Graph</option></a></td>
+      <td><a href='/'><option value='3' file-name='${name_in_dir[i]}'>Bar Graph</option></a></td>
+      <td><a href='/'><option value='4' file-name='${name_in_dir[i]}'>Stacked Bar Graph</option></a></td>
       </tr>
       `
     }
   });
   
+  $(document).ready(function(){
+    $("option").click(function(){
+      var filename = $(this).attr('file-name');
+      var graphtype = $(this).attr('value');
+      var filepath = userpath+filename;
+      var filepath = filepath.replaceAll("\\ ", "\\");
+      console.log(filepath);
+      sessionStorage.setItem("choice", filepath);
+      sessionStorage.setItem("graphtype", graphtype);
+      console.log(sessionStorage.getItem('choice'));
+      console.log(sessionStorage.getItem('graphtype'));
+
+    })
+  })
+
+
+
 </script>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
