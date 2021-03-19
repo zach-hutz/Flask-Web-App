@@ -84,20 +84,6 @@
             var horizarray = horizarray.replaceAll('   ', " ");
             var horizarray = JSON.parse(horizarray);
 
-            if (sessionStorage.getItem('choice') != null){
-                    var dbfilepath = sessionStorage.getItem('choice');
-                    var dbgraphtype = sessionStorage.getItem('graphtype');
-
-                    $.post('/', {
-                        javascript_data: dbfilepath
-                    });
-
-                    if (dbgraphtype == 1){
-                        console.log("option 1");
-                        line_graph();
-                        console.log(line_graph());
-                    }
-                }
 
         
             if (localStorage.getItem("ident") == 1){
@@ -186,17 +172,39 @@
 
                 if (sessionStorage.getItem('choice') != null){
                     var dbfilepath = sessionStorage.getItem('choice');
-                    var dbgraphtype = sessionStorage.getItem('graphtype');
 
-                    $.post('/', {
-                        javascript_data: dbfilepath
-                    });
 
-                    if (dbgraphtype == 1){
+                    document.getElementById('javascript_data').value = dbfilepath;
+                    document.getElementById('magic_hidden_form').submit();
+
+                    sessionStorage.removeItem("choice");
+
+                    if (sessionStorage.getItem('graphtype') == 1){
                         console.log("option 1");
+                        localStorage.setItem("ident", 1);
                         line_graph();
-                        console.log(line_graph());
                     }
+
+                    if (sessionStorage.getItem('graphtype') == 2){
+                        localStorage.setItem("ident", 2);
+
+                        multi_line_graph();
+                    }
+
+                    if (sessionStorage.getItem('graphtype') == 3){
+                        localStorage.setItem("ident", 3);
+
+                        bar_graph();
+                    }
+
+                    if (sessionStorage.getItem('graphtype') == 4){
+                        localStorage.setItem("ident", 4);
+
+                        stacked_bar_graph();
+                    }
+
+                    sessionStorage.removeItem("graphtype");
+
                 }
 
                 $("#form_button").on('click', function(e) {
@@ -606,6 +614,10 @@
         <canvas id="myChart" width="100" height="100"></canvas>
     </div>
     <div>
+        <form id='magic_hidden_form' style="display: none;" method="POST" enctype="multipart/form-data">
+            <input type="text" id='javascript_data' name='javascript_data'>
+            <input id='javascript_data_submit' type='submit'>
+        </form>
     </div>
 </body>
 
