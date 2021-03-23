@@ -4,7 +4,7 @@
 #form_button{
   background-color: #4CAF50;
   border-radius: 8px;
-  opacity: 0.6;
+  opacity: 0.8;
   transition: 0.3s;
   cursor: pointer;
 }
@@ -16,7 +16,7 @@
 .button_form{
   background-color: #4CAF50;
   border-radius: 8px;
-  opacity: 0.6;
+  opacity: 0.8;
   transition: 0.3s;
   cursor: pointer;
 }

@@ -83,7 +83,7 @@ def index():
                         csv_file = csv.reader(file)
                         for row in csv_file:
                             data.append(row)
-
+                            
             data = pd.DataFrame(data[1:], columns=data[0])
             d_list = list(data.columns.values)
 
@@ -150,9 +150,6 @@ def index():
                 horiz_array.append(list(horiz_data.iloc[:, i]))
 
             horiz_array_dumps = json.dumps(horiz_array)
-
-            print(data_arrays)
-            print(horiz_array)
 
             return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
