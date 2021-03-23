@@ -17,7 +17,6 @@ import pandas as pd
 import json
 import sqlite3
 import stat
-import subprocess
 import time
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
@@ -65,21 +64,25 @@ def index():
             if current_user.get_id() is not None:
                 str_id = str(current_user.get_id())
                 usr_fp = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\" + str_id, uploaded_file.filename)
-                uploaded_file.save(usr_fp)
+                if uploaded_file.filename != "":
+                    uploaded_file.save(usr_fp)
             else:
-                uploaded_file.save(filepath)
+                if uploaded_file.filename != "":
+                    uploaded_file.save(filepath)
 
             if current_user.get_id() is None:
-                with open(filepath) as file:
-                    csv_file = csv.reader(file)
-                    for row in csv_file:
-                        data.append(row)
+                if uploaded_file.filename != "":
+                    with open(filepath) as file:
+                        csv_file = csv.reader(file)
+                        for row in csv_file:
+                            data.append(row)
             else:
                 usr_fp = os.path.join("C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\user_data\\" + str_id, uploaded_file.filename)
-                with open(usr_fp) as file:
-                    csv_file = csv.reader(file)
-                    for row in csv_file:
-                        data.append(row)
+                if uploaded_file.filename != "":
+                    with open(usr_fp) as file:
+                        csv_file = csv.reader(file)
+                        for row in csv_file:
+                            data.append(row)
 
             data = pd.DataFrame(data[1:], columns=data[0])
             d_list = list(data.columns.values)
@@ -91,12 +94,6 @@ def index():
             data_y_array = list(data[y_label])
             data_y_array = [i.replace(" ", "") for i in data_y_array]
             data_y_array = [float(i) for i in data_y_array]
-
-            graph_label = []
-            graph_label.append(x_label)
-            graph_label.append(y_label)
-            graph_label = [i.replace('"', '') for i in graph_label]
-            graph_label = [i.replace('"', '') for i in graph_label]
 
             ydump = json.dumps(data_y_array)
             xdump = json.dumps(data_x_array)
@@ -116,9 +113,7 @@ def index():
 
             horiz_array_dumps = json.dumps(horiz_array)
 
-            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
-
-
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
 
         elif request.form['javascript_data'] != "":
             desired_file = request.form['javascript_data'].strip()
@@ -137,12 +132,6 @@ def index():
             data_y_array = list(data[y_label])
             data_y_array = [i.replace(" ", "") for i in data_y_array]
             data_y_array = [float(i) for i in data_y_array]
-
-            graph_label = []
-            graph_label.append(x_label)
-            graph_label.append(y_label)
-            graph_label = [i.replace('"', '') for i in graph_label]
-            graph_label = [i.replace('"', '') for i in graph_label]
 
             ydump = json.dumps(data_y_array)
             xdump = json.dumps(data_x_array)
@@ -165,7 +154,7 @@ def index():
             print(data_arrays)
             print(horiz_array)
 
-            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
     return render_template('index.html', data=data)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -197,7 +186,6 @@ def signup():
         db.session.commit()
 
         return render_template("index.html")
-
     return render_template('signup.html', form=form)
 
 @app.route('/dashboard')
@@ -226,17 +214,12 @@ def dashboard():
         files_in_dir = next(os.walk(directory))[2]
         files_in_dir_dump = json.dumps(len(files_in_dir))
         file_names_in_dir_dump = json.dumps(files_in_dir)
-        print(file_names_in_dir_dump)
-        print(files_in_dir_dump)
 
 
     files_in_dir_dump = json.dumps(len(files_in_dir))
     file_names_in_dir_dump = json.dumps(files_in_dir)
-    print(file_names_in_dir_dump)
-    print(files_in_dir_dump)
     
     dir_dump = json.dumps(fix_directory)
-    print(dir_dump)
 
     return render_template('dashboard.html', userpath=dir_dump, name=current_user.username, dir_names=file_names_in_dir_dump, dir_length=files_in_dir_dump)
 
@@ -249,10 +232,6 @@ def logout():
 @app.route('/help')
 def help():
     return render_template('help.html')
-
-@app.route('/single_line')
-def single_line():
-    return render_template('single_line.html')
 
 
 app.config['FILE_UPLOADS'] = "C:\\Users\\Zachary\\Documents\\VSCode_Projects\\monday_webapp\\app\\static\\file\\uploads"

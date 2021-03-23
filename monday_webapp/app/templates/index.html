@@ -238,64 +238,6 @@
 
             });
 
-            function bar_graph() {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var datayarray = JSON.parse("{{ datayarray }}");
-            var datayarray = JSON.parse("{{ datayarray }}");
-            var dataxarray = JSON.stringify("{{ dataxarray }}");
-            var dataxarray = JSON.parse(dataxarray);
-            var dataxarray = dataxarray.replaceAll("&#34;", '"');
-            var dataxarray = dataxarray.replaceAll("[", '');
-            var dataxarray = dataxarray.replaceAll("]", '');
-            var dataxarray = dataxarray.replaceAll(" ", '');
-            var ylabel = JSON.stringify("{{ y_label }}");
-            var ylabel = JSON.parse(ylabel);
-            var ylabel = ylabel.replaceAll("&#34;", '"');
-            var dataxarray = dataxarray.split(",")
-            var biglist = JSON.stringify("{{ json_data }}");
-            var biglist = biglist.replaceAll("&#34;", '');
-            var biglist = biglist.replaceAll('"', "");
-            var biglist = biglist.replaceAll('   ', " ");
-            var biglist = JSON.parse(biglist);
-
-            var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: dataxarray,
-                datasets: [{
-                    label: ylabel,
-                    data: datayarray,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-            });
-        }
-
         function line_graph() {
             var ctx = document.getElementById('myChart').getContext('2d');
             var datayarray = JSON.parse("{{ datayarray }}");
@@ -372,9 +314,19 @@
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
 
                     ],
                     borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
@@ -595,7 +547,7 @@
     <div>
         <form id='hidden_data' class='hidden' method="POST" enctype="multipart/form-data">
             <input class='background' type="file" id="myFile" name="filename" accept=".csv">
-            <input id='hiddenButton' type="submit">
+            <input id='hiddenButton' class='button_form' type="submit">
         </form>
         </div>
     </div>

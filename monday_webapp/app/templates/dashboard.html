@@ -43,6 +43,12 @@
       </tr>
       `
     }
+
+    if(len_file_dir == 0){
+      document.getElementById("table_data").innerHTML += `
+      <tr><td>There are no graphs yet</td></tr>
+      `
+    }
   });
   
   $(document).ready(function(){

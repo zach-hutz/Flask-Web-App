@@ -1,16 +1,34 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
 
+#form_button{
+  background-color: #4CAF50;
+  border-radius: 8px;
+  opacity: 0.6;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+#form_button:hover{
+  opacity: 1
+}
+
+.button_form{
+  background-color: #4CAF50;
+  border-radius: 8px;
+  opacity: 0.6;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.button_form:hover{
+  opacity: 1
+}
 
 .hidden {
   display: none;
 }
 
-input[type='submit']{
-  background-color: #9ea7af;
-  color: #111111;
-  border-color: #1b1e24;
-}
 
 .form_id {
   padding-left: 10px;
