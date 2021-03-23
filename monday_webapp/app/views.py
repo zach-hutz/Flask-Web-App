@@ -116,6 +116,9 @@ def index():
 
             horiz_array_dumps = json.dumps(horiz_array)
 
+            return render_template('index.html', horiz_array=horiz_array_dumps, columname=colname, json_data=json_data, graphlabel=graph_label, y_label=y_label, datayarray=ydump, dataxarray=xdump, tables=[data.to_html(classes='data')], titles=str(data.iloc[0]), header=False, index=False, index_names=False)
+
+
 
         elif request.form['javascript_data'] != "":
             desired_file = request.form['javascript_data'].strip()
