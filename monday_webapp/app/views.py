@@ -41,7 +41,6 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
@@ -51,7 +50,6 @@ class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -143,7 +141,6 @@ def index():
             json_data = json.dumps(data_arrays)
 
             colname = json.dumps(d_list)
-
             horiz_data = pd.DataFrame(data_arrays)
             horiz_array = []
             for i in range(0, len(horiz_data.iloc[:, 0])):

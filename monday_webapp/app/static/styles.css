@@ -1,18 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
 
-#form_button{
-  background-color: #4CAF50;
-  border-radius: 8px;
-  opacity: 0.8;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-#form_button:hover{
-  opacity: 1
-}
-
 .button_form{
   background-color: #4CAF50;
   border-radius: 8px;

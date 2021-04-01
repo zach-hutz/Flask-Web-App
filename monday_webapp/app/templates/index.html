@@ -12,6 +12,8 @@
         <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://dl.dropbox.com/s/iyrrn20zt5za9ma/styles.css"/>
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">    
         
         <script>
 
@@ -84,12 +86,11 @@
             var horizarray = horizarray.replaceAll('   ', " ");
             var horizarray = JSON.parse(horizarray);
 
+            var dchoice;
 
-        
             if (localStorage.getItem("ident") == 1){
                 if (colname.length <= 2) {
                     line_graph();
-
                 }else{
                     alert("Please select a CSV file with Two Columns!");
                 }
@@ -117,6 +118,30 @@
                     alert("Please select a CSV file with Three or more Columns!");
                 }
             }
+
+            if (localStorage.getItem('ident') == null){
+                if (sessionStorage.getItem('graphtype') == 1){
+                    if (localStorage.getItem('collen') <= 2){
+                        line_graph();
+                    } 
+                    if (localStorage.getItem('collen') >= 3){
+                        multi_line_graph();
+                    }
+                }
+                if (sessionStorage.getItem('graphtype') == 2){
+                    if (colname.length <= 2){
+                        bar_graph();
+                    } 
+                    if (colname.length >= 3){
+                        stacked_bar_graph();
+                        }
+                
+                
+                }
+                localStorage.removeItem('graphtype');
+                localStorage.setItem("collen", colname.length);
+            }
+            
 
             // If you would like to toggle so this refresh code
             // is executed on every OTHER refresh, then 
@@ -170,44 +195,84 @@
             $(document).ready(function(){
                 $('table').DataTable();
 
-                if (sessionStorage.getItem('choice') != null){
-                    var dbfilepath = sessionStorage.getItem('choice');
+                var ylabel = JSON.stringify("{{ y_label }}");
+                var ylabel = JSON.parse(ylabel);
 
+                var colname = JSON.stringify('{{ columname }}');
+                var colname = JSON.parse(colname);
+                var colname = colname.replaceAll("[", "");
+                var colname = colname.replaceAll("]", "");
+                var colname = colname.replaceAll("&#34;", '');
+                var colname = colname.split(",");
+                
+                localStorage.setItem("collen", colname.length);
+                console.log(colname.length);
 
-                    document.getElementById('javascript_data').value = dbfilepath;
-                    document.getElementById('magic_hidden_form').submit();
-
-                    sessionStorage.removeItem("choice");
-
-                    if (sessionStorage.getItem('graphtype') == 1){
-                        console.log("option 1");
-                        localStorage.setItem("ident", 1);
+                if (localStorage.getItem('ident') == null){
+                    if (sessionStorage.getItem('choice') != null){
+                        var dbfilepath = sessionStorage.getItem('choice');
+    
+        
+                        document.getElementById('javascript_data').value = dbfilepath;
+                        document.getElementById('magic_hidden_form').submit();
+        
+                        sessionStorage.removeItem("choice");
+                        console.log(colname.length);
+        
+                        if (sessionStorage.getItem('graphtype') == 1){
+                            if (localStorage.getItem('collen') <= 2){
+                                console.log('yes');
+                                line_graph();
+                            } 
+                            if (localStorage.getItem('collen') >= 3){
+                                multi_line_graph();
+                            }
+                        }
+                        if (sessionStorage.getItem('graphtype') == 2){
+                            if (colname.length <= 2){
+                                bar_graph();
+                            } 
+                            if (colname.length >= 3){
+                                stacked_bar_graph();
+                                }
+                        
+                        
+                        }
+                        console.log(sessionStorage.getItem('graphtype'));
+                        localStorage.removeItem('graphtype');
                     }
-
-                    if (sessionStorage.getItem('graphtype') == 2){
-                        localStorage.setItem("ident", 2);
-                    }
-
-                    if (sessionStorage.getItem('graphtype') == 3){
-                        localStorage.setItem("ident", 3);
-
-                        bar_graph();
-                    }
-
-                    if (sessionStorage.getItem('graphtype') == 4){
-                        localStorage.setItem("ident", 4);
-
-                        stacked_bar_graph();
-                    }
-
-                    sessionStorage.removeItem("graphtype");
-
                 }
+
+                $('#BSbtninfo').change(function() {
+                    $('#spinner').css('display', 'none');
+                    $('#hidden_data').submit();
+                  });
+
+                $('#BSbtninfo').click(function(){
+                    $('#spinner').css('display', '')
+                })
+
+
+                if (ylabel != ""){
+                    $('#hidden_data').addClass('hidden');
+                    $('#form_id').addClass('hidden');
+                    $('#return_button').css('display', '');
+                }
+
+                if (ylabel == ""){
+                    $('#form_id').removeClass('hidden');
+                }
+
+                $('#return_button').on('click', function(){
+                    $('#form_id').removeClass('hidden');
+                    $('#return_button').css('display', 'none');
+                });
 
                 $("#form_button").on('click', function(e) {
                         e.preventDefault();
                         validateDropDown();
                     });
+
 
             function validateDropDown() {
                     var ddl = document.getElementById('ddl');
@@ -276,9 +341,49 @@
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
 
                     ],
                     borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
                         'rgba(255, 99, 132, 1)',
@@ -497,27 +602,72 @@
                 <option>Stacked Bar Graph</option>
             </select>
             <br>
-            <input id='form_button' type="submit" />
+            <input class="btn btn-success" id='form_button' type="submit" />
         </form>
     </div>
     <br>
-    <div>
+    <div id='hidden-form' style="display: flex;">
         <form id='hidden_data' class='hidden' method="POST" enctype="multipart/form-data">
-            <input class='background' type="file" id="myFile" name="filename" accept=".csv">
-            <input id='hiddenButton' class='button_form' type="submit">
+            <input class='background' type="file" id="BSbtninfo" name="filename" accept=".csv" onchange="submitForm();" style="float: left; display:flex;">
+            <span class="spinner-border spinner-border-sm" id='spinner' style="display: flex; float: right; margin-right: 430px; margin-top: 10px; display:none;" ></span>
         </form>
+        <button class="btn btn-success" type="submit" id='return_button' style="display: none;">Return</button>
+    </div>
+    </div>
+    <br>
+    <br>
+
+    <style>
+        #chart-container {
+                height: 45vh;
+                width: 45vw;
+        }
+
+        #div_table{
+            margin-left: 100px;
+            margin-bottom: 50px;
+            height: auto;
+            width: auto;
+        }
+
+        table {
+            display: block;
+            max-height: 45vh;
+            max-width: 45vw;
+            height: auto;
+            width: auto;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-left: 100px;
+            margin-bottom: 50px;
+          }
+
+          #div_center{
+            display: flex;
+            justify-content: center;
+          }
+
+          canvas {
+              max-height: 55vh;
+              max-width: 55vw;
+              height: 55vh;
+              width: 55vw;
+              margin-top: 30px;
+          }
+
+    </style>
+    <div class='container' id='div_center'>
+        <div class="row col-md-12"> 
+            <div id="div_table" class="col-md-5 col-md-offset-1">
+                {% for table in tables %}
+                        {{ table|safe }}
+                {% endfor %}
+                {{ error_msg }}
+            </div>
+            <div id='chart-container' class="col-md-5"> 
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <div id="div_table">
-        {% for table in tables %}
-                {{ table|safe }}
-        {% endfor %}
-        {{ error_msg }}
-    </div>
-    <div>
-        <canvas id="myChart" width="100" height="100"></canvas>
     </div>
     <div>
         <form id='magic_hidden_form' style="display: none;" method="POST" enctype="multipart/form-data">
@@ -526,5 +676,6 @@
         </form>
     </div>
 </body>
+
 
 {% endblock %}

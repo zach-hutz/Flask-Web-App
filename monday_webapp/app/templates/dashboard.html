@@ -36,10 +36,8 @@
       document.getElementById("table_data").innerHTML += `
       <tr><td>${i}</td>
       <td>${name_in_dir[i]}</td>
-      <td><a href='/'><option value='1' file-name='${name_in_dir[i]}'>Single Line Graph</option></a></td>
-      <td><a href='/'><option value='2' file-name='${name_in_dir[i]}'>Multiple Line Graph</option></a></td>
-      <td><a href='/'><option value='3' file-name='${name_in_dir[i]}'>Bar Graph</option></a></td>
-      <td><a href='/'><option value='4' file-name='${name_in_dir[i]}'>Stacked Bar Graph</option></a></td>
+      <td><a href='/'><option value='1' file-name='${name_in_dir[i]}'>Line Graph</option></a></td>
+      <td><a href='/'><option value='2' file-name='${name_in_dir[i]}'>Bar Graph</option></a></td>
       </tr>
       `
     }
@@ -62,6 +60,7 @@
       sessionStorage.setItem("graphtype", graphtype);
       console.log(sessionStorage.getItem('choice'));
       console.log(sessionStorage.getItem('graphtype'));
+      localStorage.removeItem('ident');
 
     })
   })
@@ -93,10 +92,8 @@
               <tr>
                 <th>ID</th>
                 <th>File Name</th>
-                <th>Single Line Graph</th>
-                <th>Multiple Line Graph</th>
+                <th>Line Graph</th>
                 <th>Bar Graph</th>
-                <th>Stacked Bar Graph</th>
               </tr>
             </thead>
             <tbody id="table_data">
